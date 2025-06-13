@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
@@ -42,10 +44,16 @@ fun PizzaPlateSection(
             contentDescription = "Plate image",
             modifier = Modifier.fillMaxWidth(0.8f)
         )
+
+        LaunchedEffect(pagerState) {
+            snapshotFlow { pagerState.currentPage }.collect { page ->
+                updateCurrentPizza(pizzaUiModels[page])
+            }
+        }
+
         HorizontalPager(
             state = pagerState,
         ) { page ->
-            updateCurrentPizza(pizzaUiModels[page])
             PageContent(page, pizzaUiModels[page])
         }
     }

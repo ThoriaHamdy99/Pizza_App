@@ -38,16 +38,16 @@ class PizzaViewModel : ViewModel() {
 
     fun updatePizzaSize(pizza: PizzaUiModel, size: PizzaSize) {
         _uiState.update { pizzaUiState ->
-            var currentIndex = 0
+            var updatedCurrentPizza = pizza
             pizzaUiState.copy(
-                pizzaUiModels = pizzaUiState.pizzaUiModels.mapIndexed { index, currentPizza ->
+                pizzaUiModels = pizzaUiState.pizzaUiModels.map { currentPizza ->
                     if (currentPizza == pizza) {
                         val updatedPizza = currentPizza.copy(size = size)
-                        currentIndex = index
-                        updatedPizza.copy(price = updatedPizza.calculatePrice())
+                        updatedCurrentPizza = updatedPizza.copy(price = updatedPizza.calculatePrice())
+                        updatedCurrentPizza
                     } else currentPizza
                 },
-                currentPizza = pizzaUiState.pizzaUiModels.get(currentIndex)
+                currentPizza = updatedCurrentPizza
             )
         }
     }
@@ -62,18 +62,18 @@ class PizzaViewModel : ViewModel() {
 
     fun addIngredient(pizza: PizzaUiModel, ingredient: Ingredient) {
         _uiState.update { pizzaUiState ->
-            var currentIndex = 0
+            var updatedCurrentPizza = pizza
             pizzaUiState.copy(
-                pizzaUiModels = pizzaUiState.pizzaUiModels.mapIndexed { index, currentPizza ->
+                pizzaUiModels = pizzaUiState.pizzaUiModels.map { currentPizza ->
                     if (currentPizza == pizza) {
-                        currentIndex = index
                         currentPizza.ingredients.toMutableList().add(
                             ingredient
                         )
-                        currentPizza.copy(price = currentPizza.calculatePrice())
+                        updatedCurrentPizza = currentPizza.copy(price = currentPizza.calculatePrice())
+                        updatedCurrentPizza
                     } else currentPizza
                 },
-                currentPizza = pizzaUiState.pizzaUiModels.get(currentIndex)
+                currentPizza = updatedCurrentPizza
             )
         }
     }

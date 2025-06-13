@@ -75,7 +75,7 @@ fun SizedBox(
 fun String.getPizzaSize(): PizzaSize {
     return when (this) {
         "S" -> PizzaSize.SMALL
-        "M" -> PizzaSize.MEDIUAM
+        "M" -> PizzaSize.MEDIUM
         "L" -> PizzaSize.LARGE
         else -> {
             PizzaSize.SMALL
